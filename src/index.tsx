@@ -9,10 +9,7 @@ import { css } from '@emotion/react';
 const styles = {
   mainContainer: css`
     box-sizing: border-box;
-    display: flex;
-    justify-content: center;
-    margin: 48px 0;
-
+    height: 100%;
   `,
 };
 

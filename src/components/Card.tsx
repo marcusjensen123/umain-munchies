@@ -34,6 +34,10 @@ const styles = {
     gap: 8px;
     flex-direction: row;
   `,
+  wrapper: css`
+    display: flex;
+    justify-content: space-between;
+  `,
   greenDot: (isOpen: boolean) => css`
     display: inline-block;
     width: 10px;
@@ -42,6 +46,7 @@ const styles = {
     background-color: ${isOpen ? '#00703A' : '#000000'};
     border-radius: 50%;
   `,
+
 };
 
 type Props = {
@@ -60,9 +65,13 @@ export const Card = ({ restaurant }: Props) => {
 
   return (
     <div css={styles.container}>
-      <div css={styles.chipContainer}>
-        <ActionChip>{content}</ActionChip>
-       {isOpen ?  <ActionChip>{'5-10 min'}</ActionChip> : <></> }
+      <div css={styles.wrapper}>
+        
+        <div css={styles.chipContainer}>
+          <ActionChip>{content}</ActionChip>
+          {isOpen ? <ActionChip>{'5-10 min'}</ActionChip> : <></>}
+        </div>
+        <img src={restaurant.image_url} alt={name} style={{ width: '100px', height: '100px', borderRadius: '8px' }} />
       </div>
       <div css={styles.footer}>
         <h3 css={styles.noMargin}>{name}</h3>

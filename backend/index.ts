@@ -18,7 +18,6 @@ app.get('/restaurants', async (_req, res) => {
     const data = await response.json();
     res.json(data);
   } catch (error) {
-    console.error('Error fetching restaurants:', error);
     res.status(500).json({ error: 'Failed to fetch data' });
   }
 });
@@ -29,22 +28,49 @@ app.get('/restaurants/:id', async (req, res) => {
     const data = await response.json();
     res.json(data);
   } catch (error) {
-    console.error('Error fetching restaurant details:', error);
     res.status(500).json({ error: 'Failed to fetch data' });
   }
 });
 app.get('/open/:id', async (req, res) => {
-  try{
+  try {
     const response = await fetch(`${API_BASE_URL}/open/${req.params.id}`);
     const data = await response.json();
     res.json(data);
-  }
-  catch (error) {
-    console.error('Error checking restaurant status', error);
+  } catch (error) {
     res.status(500).json({ error: 'Failed to fetch data' });
   }
 });
 
+app.get('/filter', async (_req, res) => {
+  try {
+    const response = await fetch(`${API_BASE_URL}/filter`);
+    const data = await response.json();
+    res.json(data);
+  } catch (error) {
+    res.status(500).json({ error: 'Failed to fetch filter' });
+  }
+});
+
+app.get('/filter/:id', async (req, res) => {
+  try {
+    const response = await fetch(`${API_BASE_URL}/filter/${req.params.id}`);
+    const data = await response.json();
+    res.json(data);
+  } catch (error) {
+    res.status(500).json({ error: 'Failed to fetch filter' });
+  }
+});
+
+app.get('/price-range/:id', async (req, res) => {
+  try {
+    const response = await fetch(`${API_BASE_URL}/price-range/${req.params.id}`);
+    const data = await response.json();
+    res.json(data);
+  } catch (error) {
+    res.status(500).json({ error: 'Failed to fetch price range' });
+  }
+
+})
 
 app.listen(PORT, () => {
   console.log(`Backend running on http://localhost:${PORT}`);

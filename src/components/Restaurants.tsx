@@ -2,9 +2,14 @@
 import { css } from '@emotion/react';
 import { Card } from './Card';
 import { Restaurant } from '../types';
+import { MOBILE } from './globalStyles';
 
 const styles = {
   grid: css`
+    @media (max-width: ${MOBILE}px) {
+      display: flex;
+      flex-direction: column;
+    }
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     grid-template-rows: repeat(3, 1fr);
@@ -18,16 +23,14 @@ type Props = {
 
 export const Restaurants = ({ restaurants }: Props) => {
   return (
-    <div>
-      <div css={styles.grid}>
-        {restaurants.map((restaurant, index) => {
-          if (!restaurant) {
-            return <div key={index}>Restaurant not available</div>;
-          }
+    <div css={styles.grid}>
+      {restaurants.map((restaurant, index) => {
+        if (!restaurant) {
+          return <div key={index}>Restaurant not available</div>;
+        }
 
-          return <Card key={restaurant.id} restaurant={restaurant} />;
-        })}
-      </div>
+        return <Card key={restaurant.id} restaurant={restaurant} />;
+      })}
     </div>
   );
 };

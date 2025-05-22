@@ -1,5 +1,4 @@
-import { IsOpenResponse, Restaurant } from '../types';
-
+import { IsOpenResponse, PriceRangeResponse, Restaurant } from '../types';
 
 export async function getRestaurantsData(): Promise<Restaurant[]> {
   try {
@@ -39,7 +38,7 @@ export async function getFilter() {
     }
     const data = await response.json();
     console.log('Fetched filter data:', data);
-    return data;
+    return data.filters;
   } catch (error) {
     console.error('Failed to fetch filter:', error);
     throw error;
@@ -53,16 +52,24 @@ export async function getFilterById(id: string) {
       throw new Error(`HTTP error! status: ${response.status}`);
     }
     const data = await response.json();
-    console.log('Fetched filter data:', data);
+
+    console.log('Fetched filter data:', data);  // <--- log parsed data here
+
     return data;
   } catch (error) {
-    console.error('Failed to fetch filter details:', error);
     throw error;
   }
 }
 
+
 export async function isRestaurantOpen(id: string): Promise<IsOpenResponse> {
-    const res = await fetch(`http://localhost:4000/open/${id}`);
-    const json = await res.json();
-    return json;
-  }
+  const res = await fetch(`http://localhost:4000/open/${id}`);
+  const json = await res.json();
+  return json;
+}
+
+export async function getRestaurantPriceRange(id: string): Promise<PriceRangeResponse> {
+  const res = await fetch(`http://localhost:4000/price-range/${id}`);
+  const json = await res.json();
+  return json;
+}

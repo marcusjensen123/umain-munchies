@@ -1,13 +1,23 @@
 /** @jsxImportSource @emotion/react */
 
 import { globalStyles } from './globalStyles';
-import { ReactNode } from 'react';
 
 type PropsWithChildren = {
-
-  children?: ReactNode;
+  onClick?: () => void;
+  isActive?: boolean;
+  children?: React.ReactNode;
 };
 
-export const ActionChip = ({  children }: PropsWithChildren) => {
-  return <button css={globalStyles.chip}>{children}</button>;
+export const ActionChip = ({ children, onClick, isActive }: PropsWithChildren) => {
+  return (
+    <button
+      onClick={onClick}
+      css={[
+        globalStyles.chip,
+        isActive && { backgroundColor: '#000', color: '#fff' }, // example active style
+      ]}
+    >
+      {children}
+    </button>
+  );
 };
