@@ -5,18 +5,8 @@ import { ActionChip } from './ActionChip';
 import { formatTime } from '../utils/utils';
 
 const styles = {
-  overlay: css`
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(128, 128, 128, 0.3); /* grey with transparency */
-    border-radius: 8px;
-    z-index: 1;
-  `,
-  container: css`
-    position: relative; /* Required for the overlay to position absolutely inside */
+  container: (isOpen: boolean) => css`
+    position: relative;
     background-color: #fff;
     border-radius: 8px;
     padding: 16px;
@@ -25,6 +15,8 @@ const styles = {
     display: flex;
     flex-direction: column;
     overflow: hidden;
+    opacity: ${isOpen ? 1 : 0.5};
+    transition: opacity 0.3s ease;
   `,
   footer: css`
     display: flex;
@@ -76,8 +68,7 @@ export const Card = ({ restaurant }: Props) => {
   );
 
   return (
-    <div css={styles.container}>
-      {!isOpen && <div css={styles.overlay} />}
+    <div css={styles.container(isOpen ?? true)}>
       <div css={styles.wrapper}>
         <div css={styles.chipContainer}>
           <ActionChip>{content}</ActionChip>
