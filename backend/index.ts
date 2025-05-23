@@ -69,8 +69,7 @@ app.get('/price-range/:id', async (req, res) => {
   } catch (error) {
     res.status(500).json({ error: 'Failed to fetch price range' });
   }
-
-})
+});
 
 app.listen(PORT, () => {
   console.log(`Backend running on http://localhost:${PORT}`);

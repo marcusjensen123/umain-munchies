@@ -4,7 +4,7 @@ export const DELIVERY_TIME_BUCKETS = [
   { label: '0-10 min', min: 0, max: 10 },
   { label: '10-30 min', min: 10, max: 30 },
   { label: '30-60 min', min: 30, max: 60 },
-  { label: '1+ hour', min: 60, max: Infinity },
+  { label: '1+ hour', min: 60, max: 200 },
 ];
 
 export const SORT_OPTIONS = {
@@ -52,5 +52,10 @@ const compareDeliveryTime = (a: Restaurant, b: Restaurant) => {
   return a.delivery_time_minutes - b.delivery_time_minutes;
 };
 
-
-
+export function formatTime(minutes: number): string {
+  if (minutes >= 60) {
+    const hours = Math.floor(minutes / 60);
+    return `${hours} hour${hours > 1 ? 's' : ''}`;
+  }
+  return `${minutes} min`;
+}

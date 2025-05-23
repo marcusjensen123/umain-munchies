@@ -22,7 +22,6 @@ export async function getRestaurantById(id: string) {
       throw new Error(`HTTP error! status: ${response.status}`);
     }
     const data = await response.json();
-    console.log('Fetched restaurant data:', data);
     return data;
   } catch (error) {
     console.error('Failed to fetch restaurant details:', error);
@@ -37,7 +36,6 @@ export async function getFilter() {
       throw new Error(`HTTP error! status: ${response.status}`);
     }
     const data = await response.json();
-    console.log('Fetched filter data:', data);
     return data.filters;
   } catch (error) {
     console.error('Failed to fetch filter:', error);
@@ -52,15 +50,11 @@ export async function getFilterById(id: string) {
       throw new Error(`HTTP error! status: ${response.status}`);
     }
     const data = await response.json();
-
-    console.log('Fetched filter data:', data);  // <--- log parsed data here
-
     return data;
   } catch (error) {
     throw error;
   }
 }
-
 
 export async function isRestaurantOpen(id: string): Promise<IsOpenResponse> {
   const res = await fetch(`http://localhost:4000/open/${id}`);

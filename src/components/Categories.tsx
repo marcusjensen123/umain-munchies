@@ -1,6 +1,5 @@
 /** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react';
-import { globalStyles } from './globalStyles';
 import { FilterCategories } from '../types';
 import { SetStateAction } from 'react';
 import { useDeviceType } from '../hooks/useDeviceType';
@@ -20,7 +19,7 @@ const styles = {
     background-color: #fff;
     border-radius: 8px;
     padding: 8px;
-    border: ${isActive ? '  1px solid green' : '0.6px solid #ccc'};
+    border: ${isActive ? '  1px solid #00703a' : '0.6px solid #ccc'};
   `,
   noMargin: css`
     margin: 0;

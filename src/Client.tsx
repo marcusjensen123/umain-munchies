@@ -10,6 +10,7 @@ import { getFilter } from './api/restaurantApi';
 import { DELIVERY_TIME_BUCKETS } from './utils/utils';
 import { SidePanel } from './components/SidePanel';
 import { DeliveryTime } from './components/DeliveryTime';
+import { MobileOverlay } from './components/MobileOverlay';
 
 const styles = {
   mainContainer: css`
@@ -27,7 +28,6 @@ const styles = {
     gap: 16px;
     height: 100%;
   `,
-
   card: css`
     background-color: #fff;
   `,
@@ -46,6 +46,8 @@ export const Client = () => {
   const [selectedFoodType, setSelectedFoodType] = useState<string | null>(null);
   const [selectedDeliveryTimeBucket, setSelectedDeliveryTimeBucket] = useState<string | null>(null);
 
+  const [displayOverlay, setDisplayOverlay] = useState(false);
+
   const deviceType = useDeviceType();
   const isDesktop = deviceType === 'desktop';
   const isMobile = deviceType === 'mobile';
@@ -55,7 +57,6 @@ export const Client = () => {
       setLoading(true);
       try {
         const [restaurantsData, filterData] = await Promise.all([getRestaurants(), getFilter()]);
-
         setRestaurants(restaurantsData);
         setFilterCategories(filterData);
       } catch (error) {
@@ -66,6 +67,12 @@ export const Client = () => {
     }
     fetchData();
   }, []);
+
+  useEffect(() => {
+    if (deviceType) {
+      setDisplayOverlay(deviceType === 'mobile');
+    }
+  }, [deviceType]);
 
   const filteredAndSortedRestaurants = useMemo(() => {
     let result = [...restaurants];
@@ -98,38 +105,46 @@ export const Client = () => {
   }
 
   return (
-    <div css={styles.mainContainer}>
-      <div css={styles.wrapper(isMobile)}>
-        <h1>Munchies</h1>
+    <>
+      {displayOverlay && <MobileOverlay onClickHandler={setDisplayOverlay} />}
 
-        <div css={styles.column}>
-          {isDesktop && (
-            <SidePanel
-              selectedPriceTier={selectedPriceTier}
-              selectedDeliveryTimeBucket={selectedDeliveryTimeBucket}
-              selectedFoodType={selectedFoodType}
-              setSelectedDeliveryTimeBucket={setSelectedDeliveryTimeBucket}
-              setSelectedFoodType={setSelectedFoodType}
-              setSelectedPriceTier={setSelectedPriceTier}
-            />
-          )}
-          <div>
-            {isMobile && (
-              <DeliveryTime
+      <div css={styles.mainContainer}>
+        <div css={styles.wrapper(isMobile)}>
+          <h1>Munchies</h1>
+
+          <div css={styles.column}>
+            {isDesktop && (
+              <SidePanel
+                selectedPriceTier={selectedPriceTier}
                 selectedDeliveryTimeBucket={selectedDeliveryTimeBucket}
+                selectedFoodType={selectedFoodType}
                 setSelectedDeliveryTimeBucket={setSelectedDeliveryTimeBucket}
+                setSelectedFoodType={setSelectedFoodType}
+                setSelectedPriceTier={setSelectedPriceTier}
               />
             )}
-            {loading ? (
-              loaderElement
-            ) : (
-              <Categories filterCategories={categoriesToShow} setSelectedFoodType={setSelectedFoodType} selectedFoodType={selectedFoodType} />
-            )}
-            <h1>Restaurants</h1>
-            {loading ? loaderElement : <Restaurants restaurants={filteredAndSortedRestaurants} />}
+            <div>
+              {isMobile && (
+                <DeliveryTime
+                  selectedDeliveryTimeBucket={selectedDeliveryTimeBucket}
+                  setSelectedDeliveryTimeBucket={setSelectedDeliveryTimeBucket}
+                />
+              )}
+              {loading ? (
+                loaderElement
+              ) : (
+                <Categories
+                  filterCategories={categoriesToShow}
+                  setSelectedFoodType={setSelectedFoodType}
+                  selectedFoodType={selectedFoodType}
+                />
+              )}
+              <h1>Restaurants</h1>
+              {loading ? loaderElement : <Restaurants restaurants={filteredAndSortedRestaurants} />}
+            </div>
           </div>
         </div>
       </div>
-    </div>
+    </>
   );
 };

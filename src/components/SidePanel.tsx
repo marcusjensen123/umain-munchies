@@ -4,7 +4,7 @@ import { ActionChip } from './ActionChip';
 import { DELIVERY_TIME_BUCKETS } from '../utils/utils';
 import { SetStateAction } from 'react';
 import { useDeviceType } from '../hooks/useDeviceType';
-import { MOBILE } from './globalStyles';
+import { MOBILE } from '../utils/breakpoints';
 import { DeliveryTime } from './DeliveryTime';
 
 const styles = {
@@ -34,6 +34,9 @@ const styles = {
     width: fit-content;
   `,
   priceContainer: css`
+    @media (max-width: 1250px) {
+      flex-direction: column;
+    }
     display: flex;
     gap: 8px;
   `,

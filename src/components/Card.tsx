@@ -2,10 +2,21 @@
 import { css } from '@emotion/react';
 import { Restaurant } from '../types';
 import { ActionChip } from './ActionChip';
+import { formatTime } from '../utils/utils';
 
 const styles = {
+  overlay: css`
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(128, 128, 128, 0.3); /* grey with transparency */
+    border-radius: 8px;
+    z-index: 1;
+  `,
   container: css`
-    height: 202px;
+    position: relative; /* Required for the overlay to position absolutely inside */
     background-color: #fff;
     border-radius: 8px;
     padding: 16px;
@@ -13,6 +24,7 @@ const styles = {
     justify-content: space-between;
     display: flex;
     flex-direction: column;
+    overflow: hidden;
   `,
   footer: css`
     display: flex;
@@ -46,7 +58,6 @@ const styles = {
     background-color: ${isOpen ? '#00703A' : '#000000'};
     border-radius: 50%;
   `,
-
 };
 
 type Props = {
@@ -54,8 +65,9 @@ type Props = {
 };
 
 export const Card = ({ restaurant }: Props) => {
-  const { id, name, rating, filter_ids, image_url, delivery_time_minutes, price_range_id, isOpen } = restaurant;
+  const { name, isOpen, delivery_time_minutes } = restaurant;
 
+  const deliveryTime = formatTime(delivery_time_minutes);
   const content = (
     <div>
       <span css={styles.greenDot(isOpen ?? true)} />
@@ -65,11 +77,11 @@ export const Card = ({ restaurant }: Props) => {
 
   return (
     <div css={styles.container}>
+      {!isOpen && <div css={styles.overlay} />}
       <div css={styles.wrapper}>
-        
         <div css={styles.chipContainer}>
           <ActionChip>{content}</ActionChip>
-          {isOpen ? <ActionChip>{'5-10 min'}</ActionChip> : <></>}
+          {isOpen && <ActionChip>{deliveryTime}</ActionChip>}
         </div>
         <img src={restaurant.image_url} alt={name} style={{ width: '100px', height: '100px', borderRadius: '8px' }} />
       </div>
